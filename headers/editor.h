@@ -1,4 +1,3 @@
-
 #pragma once
 #include "SDL.h"
 #include <SDL2/SDL.h>
@@ -7,20 +6,41 @@
 #include <string.h>
 #include <vector>
 #include <algorithm>
-#include <tree_sitter/api.h>
-
+#include "lexer.h"
 class topBar
 {
 public:
     topBar(SDL_Renderer *renderer, TTF_Font *font, int windowWidth);
     void render(SDL_Renderer *renderer, int cursorX, int cursorY, int scrollX, int scrollY);
     void updateWindowWidth(int newWidth);
+    std::string keys;
+    std::string filename;
+    char differ;
 
 private:
     SDL_Rect barRect;
     SDL_Renderer *renderer;
     TTF_Font *font;
+
     int windowWidth;
+};
+
+class ido
+{
+public:
+    ido(SDL_Renderer *renderer, TTF_Font *font, int windowWidth, int windowHeight);
+    void render(SDL_Renderer *renderer);
+    void updateWindowSize(int newWidth, int newHeight);
+    std::string buffer;
+
+private:
+    SDL_Rect barRect;
+    int barHeight;
+    SDL_Renderer *renderer;
+
+    TTF_Font *font;
+    int windowWidth;
+    int windowHeight;
 };
 
 class cursor
@@ -46,7 +66,6 @@ public:
     void openLine();
     void cursorMoveDown();
     void renderText(std::string text, int x, int y, SDL_Color color);
-    void renderNode(TSNode node, int &x, int lineIndex, uint32_t &lastEnd);
     void addChar(char c);
     void removeChar();
     void deleteChar();
@@ -54,10 +73,15 @@ public:
     bool checkForScroll(int x, int y);
     void newLine();
     void copy();
+    void moveSelection();
     void cursorMoveWordRight();
     void cursorMoveWordLeft();
-    // std::string clipboard;
-    editor();
+    void renderToken(std::string text, int x, int y, SDL_Color color);
+    void renderHighlight();
+    void tab();
+    void reloadFont(uint8_t size);
+    bool matchBracket(char inputChar);
+    editor(lexer &lexer_ref);
     ~editor();
     void render();
     void run();
@@ -71,13 +95,16 @@ public:
     int offsetX;
     bool selecting = false;
     int selectStartX, selectStartY, selectEndX, selectEndY;
+    ido *idoBar;
+    topBar *bar;
+    bool idoActive;
+    ::cursor cursor;
 
 private:
     int height;
     int width;
     SDL_Window *window;
     SDL_Renderer *renderer;
-    ::cursor cursor;
-    topBar *bar;
+    lexer &lexer_ref;
     TTF_Font *font;
 };

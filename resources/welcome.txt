@@ -1,0 +1,17 @@
+This is an editor
+
+Your current conf
+Ido = CTRL+x+f
+move left               = CTRL + b        || left arrow
+move right              = CTRL + f        || right arrow
+move down               = CTRL + p        || down arrow
+move up                 = CTRL + n
+move to sol             = CTRL + a        
+move to eol             = CTRL + e  
+move one word left      = ALT  + b          
+move one word right     = ALT  + f 
+copy                    = CTRL + c
+paste                   = CTRL + v
+cut line from cursor.x  = CTRL + k       
+open line               = CTRL + o
+save                    = CTRL + s
